@@ -65,6 +65,8 @@
 
    services.tor.enable = true;
 
+   programs.ssh.startAgent = true;
+   programs.ssh.forwardX11 = true;
   # Enable the X11 windowing system.
    services.xserver = {
     enable = true;
