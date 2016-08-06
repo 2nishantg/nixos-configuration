@@ -32,24 +32,35 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
    environment.systemPackages = with pkgs; [
-     wget
-     dbus
-     i3status
-     dmenu
-     firefox
-     vim
-     emacs
-     networkmanagerapplet
      chromium
-     python
-     zsh
-     gparted
+     dbus
+     dmenu
+     dunst
+     emacs
+     firefox
      git
-     tor
-     smplayer
+     gnumake
+     gparted
+     htop
+     i3status
      mplayer
      mpv
+     networkmanagerapplet
+     python
+     python3
+     pythonPackages.pip
+     python27Packages.setuptools
+     python35Packages.udiskie
+     python35Packages.setuptools
+     python35Packages.gnureadline
+     python35Packages.ipython
      rxvt_unicode-with-plugins
+     smplayer
+     texlive.combined.scheme-basic
+     tor
+     vim
+     wget
+     zsh
    ];
 
   # List services that you want to enable:
@@ -67,6 +78,7 @@
 
    programs.ssh.startAgent = true;
    programs.ssh.forwardX11 = true;
+
   # Enable the X11 windowing system.
    services.xserver = {
     enable = true;
@@ -86,14 +98,15 @@
         Option      "TearFree"  "true"
     '';
     windowManager = {
-      i3.enable = true;
-#      default = "i3-gaps";
+      i3-gaps.enable = true;
+      default = "i3-gaps";
       };
     desktopManager.xterm.enable = false;
     displayManager.sessionCommands = ''
       ${pkgs.xorg.xset}/bin/xset r rate 200 50
       ${pkgs.networkmanagerapplet}/bin/nm-applet &
     '';
+    displayManager.slim.defaultUser = "nis";
    };
 
   fileSystems."/home/nis/IPT" =
@@ -104,11 +117,23 @@
   # Enable Optimus(hopefully)
   hardware.bumblebee.enable = true;
 
+
+  # Virtualbox
+  virtualisation.virtualbox.host.enable = true;
+
+ services.redshift =
+ {
+     enable = true;
+     latitude = "26.4499";
+     longitude = "80.3319";
+     temperature.night = 3500;
+ };
+
   users.extraUsers.nis =
   { isNormalUser = true;
     home = "/home/nis";
     description = "Nishant Gupta";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "vboxusers"];
   };
   users.defaultUserShell = "/run/current-system/sw/bin/zsh";
 
